@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" version="3.1" client="site" method="upgrade">
+    <name>Newsletter2Go</name>
+    <author>Newsletter2Go</author>
+    <creationDate>February 2015</creationDate>
+    <copyright>Copyright © 2015, Newsletter2Go GmbH</copyright>
+    <authorUrl>https://www.newsletter2go.de/</authorUrl>
+    <version>3.0.00</version>
+    <description>MOD_NEWSLETTER2GO_XML_DESCRIPTION</description>
+    <files>
+        <filename module="mod_newsletter2go">mod_newsletter2go.php</filename>
+        <filename>helper.php</filename>
+        <folder>tmpl</folder>
+        <folder>language</folder>
+        <filename>index.html</filename>
+        <filename>mod_newsletter2go.xml</filename>
+    </files>
+    <help key="JHELP_EXTENSIONS_MODULE_MANAGER_NEWSLETTER2GO"/>
+</extension>

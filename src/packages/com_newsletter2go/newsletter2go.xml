@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="2.5.0" method="upgrade">
+    <name>Newsletter2Go</name>
+    <creationDate>February 2015</creationDate>
+    <author>Newsletter2Go</author>
+    <copyright>Copyright © 2015 Newsletter2Go GmbH</copyright>
+    <version>3.0.00</version>
+    <description>COM_NEWSLETTER2GO_DESCRIPTION</description>
+
+    <install>
+        <sql>
+            <file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
+        </sql>
+    </install>
+    <uninstall>
+        <sql>
+            <file driver="mysql" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
+        </sql>
+    </uninstall>
+    <update>
+        <schemas>
+            <schemapath type="mysql">sql/updates/mysql</schemapath>
+        </schemas>
+    </update>
+
+    <files folder="site">
+        <filename>index.html</filename>
+        <filename>newsletter2go.php</filename>
+        <filename>controller.php</filename>
+        <folder>views</folder>
+        <folder>models</folder>
+        <folder>language</folder>
+    </files>
+
+    <administration>
+        <menu>COM_NEWSLETTER2GO_MENU</menu>
+        <files folder="admin">
+            <filename>index.html</filename>
+            <filename>newsletter2go.php</filename>
+            <filename>controller.php</filename>
+            <folder>sql</folder>
+            <folder>models</folder>
+            <folder>views</folder>
+            <folder>language</folder>
+            <folder>controllers</folder>
+        </files>
+    </administration>
+</extension>
