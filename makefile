@@ -1,5 +1,5 @@
-version = 0.0.00
-outfile = pkg_newsletter2go_v$(version).zip
+version = 0_0_00
+outfile = Joomla_nl2go_$(version).zip
 objects = tmp/pkg_newsletter2go.xml \
 	tmp/packages/com_newsletter2go.zip \
 	tmp/packages/mod_newsletter2go.zip
