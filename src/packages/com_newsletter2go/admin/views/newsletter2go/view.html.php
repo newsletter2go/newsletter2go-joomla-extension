@@ -23,21 +23,16 @@ class Newsletter2GoViewNewsletter2Go extends JViewLegacy
         $model = $this->getModel();
 
         $this->apiKey = $model->getOption('apiKey');
-        $this->doiCode = $model->getOption('doiCode');
-
-        $response = $model->checkDoiCode($this->doiCode);
-        $this->doiSuccess = $response['success'];
-        $this->doiHost = $response['host'];
-
+        $this->formUniqueCode = $model->getOption('formUniqueCode');
+        $this->configFormStyles = $model->getOption('configFormStyles');
         $this->widget = $model->getOption('widget');
 
-        $this->fields = $model->getOption('fields', '[]', true);
-        $this->texts = $model->getOption('texts', '[]', true);
-        $this->colors = $model->getOption('colors', '[]', true);
+        if (!strlen(trim($this->formUniqueCode)) > 0 || $this->formUniqueCode === null) {
+            $this->_errors['formId'] = "Please, enter unique form id!";
+        }
 
         $this->groups = $this->get('groups');
-        $this->attributes = $this->get('attributes');
-        $this->previewUrl = JURI::root() . 'index.php?option=com_newsletter2go&widgetSource=';
+        $this->previewUrl = 'https://subscribe.newsletter2go.com/?n2g=' . $this->formUniqueCode;
         JToolbarHelper::title(JText::_('COM_NEWSLETTER2GO_VIEW_NEWSLETTER2GO_TITLE'), 'Newsletter2Go');
         parent::display();
         $this->setDocument();
