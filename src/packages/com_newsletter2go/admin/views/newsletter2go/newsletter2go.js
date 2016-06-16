@@ -27,7 +27,9 @@ window.addEventListener('load', function () {
             n2g('create', formUniqueCode);
             n2g('subscribe:createForm', n2gConfig);
 
-            updateSourceCode();
+            timer = setTimeout(function () {
+                widgetSourceCode.textContent = widgetPreview.firstChild.outerHTML;
+            }, 2000);
         };
 
     function getStyle (field, str) {
@@ -68,20 +70,7 @@ window.addEventListener('load', function () {
             n2g('subscribe:createForm', n2gConfig);
         }, 200);
 
-        updateSourceCode();
-    }
-
-    function updateSourceCode () {
-        clearTimeout(timer);
-        timer = setTimeout(function () {
-            widgetSourceCode.textContent = '';
-            widgetSourceCode.textContent = widgetPreview.firstChild.outerHTML;
-        }, 200);
-
-        var responsiveStyle = document.createElement("STYLE");
-        var styleText = document.createTextNode("#n2g_container * {box-sizing: border-box;} #n2g_container input.n2g_form_inputs, #n2g_container select {width:100%; height: 2em;}");
-        responsiveStyle.appendChild(styleText);
-        document.getElementById('n2g_form').appendChild(responsiveStyle);
+        widgetSourceCode.textContent = widgetPreview.firstChild.outerHTML;
     }
 
     function updateString (string, cssProperty, cssValue) {
@@ -101,7 +90,7 @@ window.addEventListener('load', function () {
             }
         }
         if (!found) {
-            stylePropertiesArray[i] = cssProperty + ':' + cssValue; //todo check i
+            stylePropertiesArray[i] = cssProperty + ':' + cssValue;
         }
         return stylePropertiesArray.join(';') + ';';
     }
