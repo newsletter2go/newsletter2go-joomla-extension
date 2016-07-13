@@ -9,7 +9,7 @@ function n2goAjaxFormSubmit() {
     jQuery.ajax({
         url: 'index.php?option=com_newsletter2go&task=ajaxSubscribe&format=ajax',
         method: 'POST',
-        data: jQuery("#n2goForm").serialize(),
+        data: jQuery("#n2g_form").serialize(),
         success: function (response) {
             var data = JSON.parse(response);
             if (data.success) {

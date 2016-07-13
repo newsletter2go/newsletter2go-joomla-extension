@@ -44,42 +44,9 @@ class Newsletter2GoControllerNewsletter2Go extends JControllerForm
         $model = $this->getModel('newsletter2go');
         $input = JFactory::getApplication()->input;
         $model->setOption('apiKey', $input->getString('apiKey'));
-        $model->setOption('doiCode', $input->getString('doiCode'));
-        $checks = $input->getArray();
-        $attributes = array('email' => array(
-            'sort' => $input->getInt('emailSort'),
-            'required' => true,
-        ));
-        for ($i = 0; $i < count($checks['attributes']); $i++) {
-            $tmpName = $checks['attributes'][$i];
-            $attributes[$tmpName] = array(
-                'sort' => $input->getInt($tmpName . 'Sort'),
-                'required' => $input->getBool($tmpName . 'Required'),
-            );
-        }
-
-        $model->setOption('fields', $attributes);
-        $model->setOption('titles', $checks['fieldTitles']);
-
-        $general = array();
-        $general['success'] = $checks['success'];
-        $general['failureSubsc'] = $checks['failureSubsc'];
-        $general['failureEmail'] = $checks['failureEmail'];
-        $general['failureRequired'] = $checks['failureRequired'];
-        $general['failureError'] = $checks['failureError'];
-        $general['buttonText'] = $checks['buttonText'];
-        $model->setOption('texts', $general);
-
-        $colors = array();
-        $colors['textColor'] = $checks['textColor'];
-        $colors['borderColor'] = $checks['borderColor'];
-        $colors['backgroundColor'] = $checks['backgroundColor'];
-        $colors['btnTextColor'] = $checks['btnTextColor'];
-        $colors['btnBackgroundColor'] = $checks['btnBackgroundColor'];
-        $colors['formBackgroundColor'] = $checks['formBackgroundColor'];
-        $model->setOption('colors', $colors);
-        $widget = $input->get('widgetSourceCode', null, 'raw');
-        $model->setOption('widget', $widget);
+        $model->setOption('formUniqueCode', $input->getString('formUniqueCode'));
+        $model->setOption('configFormStyles', $input->getString('widgetStyleConfig'));
+        $model->setOption('widget', $input->get('widgetSourceCode', null, 'raw'));
 
         $this->display();
     }

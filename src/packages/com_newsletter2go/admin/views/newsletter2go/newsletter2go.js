@@ -1,285 +1,152 @@
-function n2goPreviewRendered() {
-    document.getElementById('preview-loading-mask').style.display = 'none';
-}
+window.addEventListener('load', function () {
+    var formUniqueCode = document.getElementById('formUniqueCode').value.trim(),
+        widgetPreview = document.getElementById('widgetPreview');
 
-window.onload = function () {
-    var dragSrcEl = null,
-            farb = jQuery.farbtastic('#colorPicker'),
-            elements = document.getElementsByClassName('js-n2go-widget-field'),
-            previewUrl = document.getElementById('n2goBaseUrl').value,
-            requiredLabel = document.getElementById('hiddenRequiredLabel').value,
-            i,
-            renderHTML = function () {
-                var widget = document.getElementById('widgetSourceCode'),
-                        view = document.getElementById('widgetPreview');
-                document.getElementById('preview-loading-mask').style.display = 'block';
-                widget.style.display = 'none';
-                view.src = previewUrl + encodeURIComponent(widget.value);
-                view.style.display = 'block';
-
-                document.getElementById('btnShowPreview').className = 'btn-primary btn-nl2go';
-                document.getElementById('btnShowSource').className = '';
-            };
-
-    function buildWidgetForm(sourceCode) {
-        if (!sourceCode) {
-            var chbx = document.getElementsByName('attributes[]'),
-                    fields = [], i, elem,
-                    texts, styles, inputStyle;
-
-            for (i = 0; i < chbx.length; i++) {
-                if (chbx[i].checked === true) {
-                    elem = [];
-                    elem['sort'] = document.getElementsByName(chbx[i].value + 'Sort')[0].value;
-                    elem['required'] = document.getElementsByName(chbx[i].value + 'Required')[0].value ? ' required' : '';
-                    elem['name'] = chbx[i].title;
-                    elem['id'] = chbx[i].value;
-
-                    fields.push(elem);
-                }
+    var picker = jQuery.farbtastic('#colorPicker'),
+        widgetStyleConfig = document.getElementById('widgetStyleConfig'),
+        widgetSourceCode = document.getElementById('widgetSourceCode'),
+        input,
+        timer = 0,
+        n2gSetUp = function  () {
+            if (widgetStyleConfig.textContent === null || widgetStyleConfig.textContent.trim() === "") {
+                widgetStyleConfig.textContent = JSON.stringify(n2gConfig, null, 2);
+            } else {
+                n2gConfig = JSON.parse(widgetStyleConfig.textContent);
             }
 
-            texts = [];
-            texts['button'] = document.getElementsByName('buttonText')[0].value;
+            [].forEach.call(document.getElementsByClassName('nl2g-fields'), function (element) {
+                var field = element.name.split('.');
+                var style = getStyle(field[1], n2gConfig[field[0]]['style']);
 
-            styles = [];
-            styles['textColor'] = document.getElementsByName('textColor')[0].value;
-            styles['borderColor'] = document.getElementsByName('borderColor')[0].value;
-            styles['backgroundColor'] = document.getElementsByName('backgroundColor')[0].value;
-            styles['btnTextColor'] = document.getElementsByName('btnTextColor')[0].value;
-            styles['btnBackgroundColor'] = document.getElementsByName('btnBackgroundColor')[0].value;
-            styles['formBackgroundColor'] = document.getElementsByName('formBackgroundColor')[0].value;
-
-            fields.sort(function (a, b) {
-                return a['sort'] - b['sort'];
+                element.value = element.style.backgroundColor = style;
+                if (element.value !== '') {
+                    element.style.color = picker.RGBToHSL(picker.unpack(element.value))[2] > 0.5 ? '#000' : '#fff';
+                }
             });
 
-            inputStyle = 'style="';
-            inputStyle += styles['formBackgroundColor'] ? 'background-color:' + styles['formBackgroundColor'] + '; ' : '';
-            inputStyle += styles['textColor'] ? 'color:' + styles['textColor'] + '; ' : '';
-            inputStyle += '" ';
+            n2g('create', formUniqueCode);
+            n2g('subscribe:createForm', n2gConfig);
 
-            sourceCode = '<div id="n2goResponseArea" ' + inputStyle + '>';
-            sourceCode += '\n  <form method="post" id="n2goForm">';
-
-            if (styles['borderColor'] || styles['backgroundColor'] || styles['textColor']) {
-                inputStyle = 'style="';
-                inputStyle += styles['borderColor'] ? 'border-color:' + styles['borderColor'] + '; ' : '';
-                inputStyle += styles['backgroundColor'] ? 'background-color:' + styles['backgroundColor'] + '; ' : '';
-                inputStyle += styles['textColor'] ? 'color:' + styles['textColor'] + '; ' : '';
-                inputStyle += '" ';
-            }
-
-            for (i = 0; i < fields.length; i++) {
-                if (fields[i]['name'] === 'Gender') {
-                    sourceCode += '\n    ' + fields[i]['name'] + '<br />\n    ' + '<select ' + inputStyle + 'name="' + fields[i]['id'] + '" ' + fields[i]['required'] + '>';
-                    sourceCode += '\n      <option value=" "></option>';
-                    sourceCode += '\n      <option value="m">Male</option>';
-                    sourceCode += '\n      <option value="f">Female</option>';
-                    sourceCode += '\n    </select><br>';
-                } else {
-                    sourceCode += '\n    ' + fields[i]['name'] + '<br />\n    ' + '<input ' + inputStyle + 'type="text" name="' + fields[i]['id'] + '"' +  fields[i]['required'] + ' /><br />';
-                }
-            }
-
-            sourceCode += '\n    <br />\n    <div class="message"></div>';
-            sourceCode += '\n    <input name="action" type="hidden" value="n2go_subscribe" />';
-            sourceCode += '\n    <button type="button" ';
-            if (styles['btnTextColor'] || styles['btnBackgroundColor']) {
-                sourceCode += 'style="background-image: none; ';
-                sourceCode += styles['btnTextColor'] ? 'color:' + styles['btnTextColor'] + ';' : '';
-                sourceCode += styles['btnBackgroundColor'] ? 'background-color:' + styles['btnBackgroundColor'] + ';' : '';
-                sourceCode += '"';
-            }
-
-            sourceCode += ' id="n2goButton" onClick="n2goAjaxFormSubmit();" >' + texts['button'] + '</button>\n  </form>\n</div>';
-            document.getElementById('widgetSourceCode').innerHTML = sourceCode;
-            document.getElementById('widgetSourceCode').value = sourceCode;
-        }
-
-        renderHTML();
-    }
-
-    function extractValues(elem) {
-        return {
-            id: elem.children[0].id,
-            class: elem.className,
-            title: elem.children[0].title,
-            value: elem.children[0].value,
-            checked: elem.children[0].checked,
-            disabled: elem.children[0].disabled,
-            displayLabel: elem.children[2].innerHTML,
-            required: elem.children[3].value,
-            label: elem.children[5].innerHTML
+            timer = setTimeout(function () {
+                widgetSourceCode.textContent = widgetPreview.firstChild.outerHTML;
+            }, 2000);
         };
+
+    function getStyle (field, str) {
+        var styleArray = str.split(';');
+
+        for (var i=0; i < styleArray.length; i++){
+            var styleField = styleArray[i].split(':');
+            if (styleField[0].trim() == field) {
+                return styleField[1].trim();
+            }
+        }
+        return '';
     }
 
-    function importValues(elem, values) {
-        elem.className = values.class;
-        elem.children[0].id = values.id;
-        elem.children[0].title = values.title;
-        elem.children[0].value = values.value;
-        elem.children[0].checked = values.checked;
-        elem.children[0].disabled = values.disabled;
-        elem.children[1].name = values.value + 'Sort';
-        elem.children[2].innerHTML = values.displayLabel;
-        elem.children[3].value = values.required;
-        elem.children[3].name = values.value + 'Required';
-        elem.children[4].name = 'fieldTitles[' + values.value + ']';
-        elem.children[4].value = values.title;
-        elem.children[5].htmlFor = values.id;
-        elem.children[5].innerHTML = values.label;
+    function updateConfig (element) {
+        widgetStyleConfig.textContent = '';
+        var formPropertyArray = element.name.split('.'),
+            property = formPropertyArray[0],
+            attribute = 'style',
+            cssProperty = formPropertyArray[1],
+            cssValue = element.value;
 
-    }
-
-    function handleDragStart(e) {
-        dragSrcEl = this;
-        e.dataTransfer.effectAllowed = 'move';
-        e.dataTransfer.setData('Text', JSON.stringify(extractValues(this)));
-    }
-
-    function handleDragOver(e) {
-        e.preventDefault();
-        e.dataTransfer.dropEffect = 'move';
-
-        return false;
-    }
-
-    function handleDragEnter(e) {
-        e.preventDefault();
-        this.classList.add('over');
-    }
-
-    function handleDragLeave(e) {
-        e.preventDefault();
-        this.classList.remove('over');
-    }
-
-    function handleDrop(e) {
-        e.stopPropagation();
-        e.preventDefault();
-
-        if (dragSrcEl != this) {
-            var a = JSON.parse(e.dataTransfer.getData('Text'));
-            var b = extractValues(this);
-            importValues(dragSrcEl, b);
-            importValues(this, a);
+        var styleProperties;
+        if (n2gConfig[property][attribute] == '') {
+            styleProperties = cssProperty + ':' + cssValue;
+        } else {
+            styleProperties = updateString(n2gConfig[property][attribute], cssProperty, cssValue);
         }
 
-        return false;
+        n2gConfig[property][attribute] = styleProperties;
+        widgetStyleConfig.textContent = JSON.stringify(n2gConfig, null, 2);
     }
 
-    function handleDragEnd() {
-        [].forEach.call(document.querySelectorAll('#widgetFields .widgetField'), function (field) {
-            field.classList.remove('over');
-        });
+    function updateForm () {
+        clearTimeout(timer);
+        timer = setTimeout(function () {
+            document.getElementById('n2g_form').remove();
+            n2g('subscribe:createForm', n2gConfig);
+        }, 200);
 
-        buildWidgetForm();
+        widgetSourceCode.textContent = widgetPreview.firstChild.outerHTML;
     }
 
-    function transformToEditBox(e) {
-        var me = this,
-            textField = document.createElement('input'),
-            oldText = me.innerHTML.replace(' (required)', '').trim();
+    function updateString (string, cssProperty, cssValue) {
+        if (string.slice(-1) === ';') {
+            string = string.substring(0, string.length - 1);
+        }
+        var stylePropertiesArray = string.split(';'),
+            found = false;
 
-        textField.value = oldText;
-        textField.type = 'text';
-        textField.addEventListener('blur', function(){
-            var val = this.value;
-
-            this.parentElement.draggable = true;
-            val = val ? val : oldText;
-            if (oldText === val) {
-                this.parentNode.replaceChild(me, this);
-                return true;
+        for (var i = 0; i < stylePropertiesArray.length; i++) {
+            var trimmedAttr = stylePropertiesArray[i].trim();
+            var styleProperty = trimmedAttr.split(':');
+            if (styleProperty[0] == cssProperty) {
+                stylePropertiesArray[i] = cssProperty + ':' + cssValue;
+                found = true;
+                break;
             }
-
-            this.parentElement.children[0].title = val;
-            this.parentElement.children[4].value = val;
-            me.innerHTML = me.innerHTML.replace(oldText, val);
-
-            this.parentNode.replaceChild(me, this);
-            buildWidgetForm();
-        }, false);
-
-        me.parentNode.replaceChild(textField, me);
-        textField.parentElement.draggable = false;
-        textField.focus();
+        }
+        if (!found) {
+            stylePropertiesArray[i] = cssProperty + ':' + cssValue;
+        }
+        return stylePropertiesArray.join(';') + ';';
     }
 
-    [].forEach.call(document.querySelectorAll('#widgetFields .widgetField'), function (field) {
-        field.addEventListener('dragstart', handleDragStart, false);
-        field.addEventListener('dragenter', handleDragEnter, false);
-        field.addEventListener('dragover', handleDragOver, false);
-        field.addEventListener('dragleave', handleDragLeave, false);
-        field.addEventListener('drop', handleDrop, false);
-        field.addEventListener('dragend', handleDragEnd, false);
-        field.children[2].addEventListener('click', transformToEditBox, false);
-    });
-
-    buildWidgetForm(true);
-    
-    document.getElementById('btnShowSource').onclick = function () {
-        var view = document.getElementById('widgetSourceCode');
-        view.style.display = 'block';
-        document.getElementById('widgetPreview').style.display = 'none';
+    function show () {
+        switch(this.id) {
+            case 'btnShowConfig':
+                widgetStyleConfig.style.display = 'block';
+                widgetPreview.style.display = widgetSourceCode.style.display = 'none';
+                break;
+            case 'btnShowSource':
+                widgetSourceCode.style.display = 'block';
+                widgetPreview.style.display = widgetStyleConfig.style.display = 'none';
+                break;
+            default:
+                widgetPreview.style.display = 'block';
+                widgetStyleConfig.style.display = widgetSourceCode.style.display = 'none';
+        }
         this.className = 'btn-primary btn-nl2go';
-        document.getElementById('btnShowPreview').className = '';
-    };
-
-    document.getElementById('btnShowPreview').onclick = function () {
-        renderHTML();
-    };
-
-    function hookClickHandler(checkbox) {
-        checkbox.onclick = function (e) {
-            var parentChildren = this.parentElement.children;
-
-            if (!this.checked) {
-                if (parentChildren[3].value) {
-                    e.preventDefault();
-                    this.checked = true;
-                    this.parentNode.className = 'widgetField';
-                    parentChildren[3].value = '';
-                    parentChildren[2].innerHTML = parentChildren[2].innerHTML.replace(requiredLabel, '');
-                    buildWidgetForm();
-                    return false;
-                }
-            } else {
-                this.parentNode.className = 'widgetField n2go-required';
-                parentChildren[3].value = 'true';
-                parentChildren[2].innerHTML += requiredLabel;
-            }
-        };
-    }
-
-    for (i = 0; i < elements.length; i++) {
-        if (elements[i].type === 'checkbox') {
-            hookClickHandler(elements[i]);
-        }
-        elements[i].onchange = function () {
-            buildWidgetForm();
-        };
+        [].forEach.call(jQuery('#'+this.id).siblings(), function(button) {
+            button.className = '';
+        });
     }
 
     jQuery('.color-picker').focus(function () {
-        var input = this;
-
-        // reset to start position before linking to current input
-        farb.linkTo(function () {
-        }).setColor('#000');
-        farb.linkTo(function (color) {
+        input = this;
+        picker.linkTo(function () {}).setColor('#000');
+        picker.linkTo(function (color) {
             input.style.backgroundColor = color;
-            input.style.color = farb.RGBToHSL(farb.unpack(color))[2] > 0.5 ? '#000' : '#fff';
+            input.style.color = picker.RGBToHSL(picker.unpack(color))[2] > 0.5 ? '#000' : '#fff';
             input.value = color;
+
+            updateConfig(input);
+            updateForm();
+
         }).setColor(input.value);
     }).blur(function () {
-        farb.linkTo(function () {
-        }).setColor('#000');
-        if (!this.value) {
-            this.style.backgroundColor = '';
-            this.style.color = '';
+        input = this;
+        picker.linkTo(function () {}).setColor('#000');
+        if (!input.value) {
+            input.style.backgroundColor = '';
+            input.style.color = '';
         }
-        buildWidgetForm();
+        updateConfig(input);
+        updateForm();
     });
-};
+
+    if (formUniqueCode !== '') {
+        n2gSetUp();
+
+        [].forEach.call(document.getElementById('n2gButtons').children, function (button) {
+            button.addEventListener('click', show);
+        });
+
+        document.getElementById('colorPicker').addEventListener('click', function () {
+            input && input.focus();
+        });
+    }
+});
