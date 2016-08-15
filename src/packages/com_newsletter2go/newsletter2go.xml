@@ -4,7 +4,7 @@
     <creationDate>February 2015</creationDate>
     <author>Newsletter2Go</author>
     <copyright>Copyright © 2015 Newsletter2Go GmbH</copyright>
-    <version>3.0.00</version>
+    <version>4.0.00</version>
     <description>COM_NEWSLETTER2GO_DESCRIPTION</description>
 
     <install>
@@ -22,6 +22,8 @@
             <schemapath type="mysql">sql/updates/mysql</schemapath>
         </schemas>
     </update>
+
+    <scriptfile>install.php</scriptfile>
 
     <files folder="site">
         <filename>index.html</filename>

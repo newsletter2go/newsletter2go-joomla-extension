@@ -5,7 +5,7 @@
     <creationDate>February 2015</creationDate>
     <copyright>Copyright © 2015, Newsletter2Go GmbH</copyright>
     <authorUrl>https://www.newsletter2go.de/</authorUrl>
-    <version>3.0.00</version>
+    <version>4.0.00</version>
     <description>MOD_NEWSLETTER2GO_XML_DESCRIPTION</description>
     <files>
         <filename module="mod_newsletter2go">mod_newsletter2go.php</filename>

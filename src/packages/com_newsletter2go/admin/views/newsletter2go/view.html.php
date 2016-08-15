@@ -12,6 +12,8 @@ jimport('joomla.application.component.view');
 class Newsletter2GoViewNewsletter2Go extends JViewLegacy
 {
 
+    const N2GO_INTEGRATION_URL = 'https://www.newsletter2go.com/integrations/#/integration/JO';
+
     /**
      * Display method of Newsletter2Go view
      *
@@ -25,6 +27,16 @@ class Newsletter2GoViewNewsletter2Go extends JViewLegacy
         $this->apiKey = $model->getOption('apiKey');
         $this->formUniqueCode = $model->getOption('formUniqueCode');
         $this->configFormStyles = $model->getOption('configFormStyles');
+        $this->authKey = $model->getOption('authKey');
+        $lang = JFactory::getLanguage();
+        $langCode = current(explode("-", $lang->getDefault()));
+        $version = $model->getVersion();
+        $baseUrl = urlencode(JURI::root());
+        $callbackUrl = urlencode(JURI::root()."index.php?option=com_newsletter2go&task=n2goCallback");
+        $this->apiKeyConnectUrl = self::N2GO_INTEGRATION_URL."?version=". $version ."&apiKey=". $this->apiKey ."&language=". $langCode ."&url=". $baseUrl ."&callback=". $callbackUrl;
+
+        $this->forms = $model->getForms($this->authKey);
+
         $this->widget = $model->getOption('widget');
 
         if (!strlen(trim($this->formUniqueCode)) > 0 || $this->formUniqueCode === null) {

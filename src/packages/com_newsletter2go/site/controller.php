@@ -236,5 +236,24 @@ class Newsletter2GoController extends JControllerLegacy
 
         return json_decode($response, true);
     }
+
+    /**
+     * Ajax endpoint for subscribing new customer over widget
+     *
+     * @throws Exception
+     */
+    public function n2goCallback()
+    {
+        $model = $this->getModel('newsletter2go');
+        $input = JFactory::getApplication()->input;
+        $model->setOption('authKey', $input->getString('authKey'));
+        $model->setOption('accessToken', $input->getString('access-token'));
+        $model->setOption('refreshToken', $input->getString('refresh-token'));
+
+        $result = array('success' => true);
+        echo json_encode($result);
+        jexit();
+
+    }
 }
 

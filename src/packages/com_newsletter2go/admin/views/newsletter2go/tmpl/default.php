@@ -6,23 +6,25 @@ defined('_JEXEC') or die;
     <div class="n2go-section">
         <h2><?php echo JText::_('COM_NEWSLETTER2GO_CONNECT'); ?></h2>
         <div class="n2go-container">
-            <h3 class="n2go-header-connection" style="background-color: <?php echo $this->groups['success'] ? 'greenyellow!' : 'yellow'; ?>">
-                <?php echo $this->groups['success'] ? JText::_('COM_NEWSLETTER2GO_CONNECTED') : JText::_('COM_NEWSLETTER2GO_NOTCONNECTED'); ?>
-            </h3>
-            <input type="text" name="apiKey" placeholder="<?php echo JText::_('COM_NEWSLETTER2GO_APIKEY_PLACEHOLDER');?>" value="<?php echo $this->apiKey; ?>" style="width:300px" />
-            <button onclick="Joomla.submitbutton('newsletter2go.save')" class="btn-primary"><?php echo JText::_('COM_NEWSLETTER2GO_SAVE'); ?></button>
+<!--            <h3 class="n2go-header-connection" style="background-color: --><?php //echo $this->groups['success'] ? 'greenyellow!' : 'yellow'; ?><!--">-->
+<!--                --><?php //echo $this->groups['success'] ? JText::_('COM_NEWSLETTER2GO_CONNECTED') : JText::_('COM_NEWSLETTER2GO_NOTCONNECTED'); ?>
+<!--            </h3>-->
+            <input type="text" name="apiKey" placeholder="<?php echo JText::_('COM_NEWSLETTER2GO_APIKEY_PLACEHOLDER');?>" value="<?php echo $this->apiKey; ?>" style="width:300px" readonly>
+            <a href="<?php echo $this->apiKeyConnectUrl; ?>" class="btn-primary" target="_blank" style="padding:5px"><?php echo JText::_('COM_NEWSLETTER2GO_CONNECT'); ?></a>
             <br />
-            <a href="https://app.newsletter2go.com/en/settings/#/api" target="_blank"><?php echo JText::_('COM_NEWSLETTER2GO_FIND_API_KEY'); ?></a>
+            <a href="#" onclick="Joomla.submitbutton('newsletter2go.resetApiKey')"><?php echo JText::_('COM_NEWSLETTER2GO_RESET_API_KEY'); ?></a>
         </div>
         <hr />
     </div>
     <div class="n2go-section">
         <h2><?php echo JText::_('COM_NEWSLETTER2GO_FORM_CODE'); ?></h2>
         <div class="n2go-container">
-            <input type="text" id="formUniqueCode" name="formUniqueCode" placeholder="<?php echo JText::_('COM_NEWSLETTER2GO_FORMID_PLACEHOLDER');?>" value="<?php echo $this->formUniqueCode; ?>" style="width:300px" />
+            <select id="formUniqueCode" name="formUniqueCode" style="margin-top:9px">
+            <?php foreach ($this->forms as $form) { ?>
+            <option value="<?php echo $form['hash']; ?>" <?php if ($form['hash'] == $this->formUniqueCode) { echo "selected"; }?>><?php echo $form['name']; ?></option>
+            <?php } ?>
+            </select>
             <button onclick="Joomla.submitbutton('newsletter2go.save')" class="btn-primary"><?php echo JText::_('COM_NEWSLETTER2GO_SAVE'); ?></button>
-            <br />
-            <a href="https://ui.newsletter2go.com" target="_blank"><?php echo JText::_('COM_NEWSLETTER2GO_FIND_FORM_CODE'); ?></a>
         </div>
         <hr />
     </div>

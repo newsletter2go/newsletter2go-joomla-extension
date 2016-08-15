@@ -27,6 +27,27 @@ class Newsletter2GoModelNewsletter2Go extends JModelList
 
         return $decode === true ? json_decode($value, true) : $value;
     }
+
+    public function setOption($name, $value)
+    {
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        $query->delete('#__newsletter2go')->where("`name` = '$name'");
+        $db->setQuery($query);
+        $db->execute();
+
+        if (is_array($value) || is_object($value)) {
+            $value = json_encode($value);
+        }
+
+        $values = array($db->quote($name), $db->quote($value));
+        $columns = array('name', 'value');
+        $query->insert($db->quoteName('#__newsletter2go'))
+            ->columns($columns)
+            ->values(implode(',', $values));
+        $db->setQuery($query);
+        $db->execute();
+    }
     
     public function getExtensionVersion()
     {

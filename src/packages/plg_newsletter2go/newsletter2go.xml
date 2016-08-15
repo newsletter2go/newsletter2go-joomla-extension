@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="plugin" version="3.1" group="content">
+    <name>Content - Newsletter2Go</name>
+    <author>Newsletter2Go</author>
+    <creationDate>July 2016</creationDate>
+    <copyright>Copyright © 2016, Newsletter2Go GmbH</copyright>
+    <authorUrl>https://www.newsletter2go.de/</authorUrl>
+    <version>4.0.00</version>
+    <description><![CDATA[<strong>Newsletter2Go content plugin</strong>
+        <p>To display Newsletter2Go inside articles please use one of the following short codes:</p>
+        <ul>
+            <li><strong>{newsletter2go}</strong> displays form embedded inside an article</li>
+            <li><strong>{newsletter2go type=plugin}</strong> same as above but with type parameter</li>
+            <li><strong>{newsletter2go type=popup}</strong> displays form in modal/popup window</li>
+            <li><strong>{newsletter2go type=popup delay=5}</strong> same as above, but with delay parameter which represents delay in seconds before modal/popup window is displayed</li>
+        </ul>]]>
+    </description>
+    <files>
+        <filename plugin="newsletter2go">newsletter2go.php</filename>
+        <filename>index.html</filename>
+        <filename>newsletter2go.xml</filename>
+    </files>
+</extension>

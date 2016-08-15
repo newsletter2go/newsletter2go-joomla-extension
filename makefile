@@ -2,7 +2,8 @@ version = 0_0_00
 outfile = Joomla_nl2go_$(version).zip
 objects = tmp/pkg_newsletter2go.xml \
 	tmp/packages/com_newsletter2go.zip \
-	tmp/packages/mod_newsletter2go.zip
+	tmp/packages/mod_newsletter2go.zip \
+    tmp/packages/plg_newsletter2go.zip
 
 $(version): $(outfile)
 
@@ -23,6 +24,9 @@ tmp/packages/com_newsletter2go.zip: tmp
 
 tmp/packages/mod_newsletter2go.zip: tmp
 	cd src/packages/ && zip -r ../../tmp/packages/mod_newsletter2go.zip mod_newsletter2go/
+
+tmp/packages/plg_newsletter2go.zip: tmp
+	cd src/packages/ && zip -r ../../tmp/packages/plg_newsletter2go.zip plg_newsletter2go/
 
 .PHONY: svn
 svn:
