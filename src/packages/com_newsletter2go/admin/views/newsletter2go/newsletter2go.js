@@ -1,9 +1,8 @@
-window.addEventListener('load', function () {
+window.addEventListener('load',  setTimeout(function () {
     var formUniqueCode = document.getElementById('formUniqueCode').value.trim(),
         widgetPreview = document.getElementById('widgetPreview');
 
-    var picker = jQuery.farbtastic('#colorPicker'),
-        widgetStyleConfig = document.getElementById('widgetStyleConfig'),
+    var widgetStyleConfig = document.getElementById('widgetStyleConfig'),
         widgetSourceCode = document.getElementById('widgetSourceCode'),
         input,
         timer = 0,
@@ -14,13 +13,14 @@ window.addEventListener('load', function () {
                 n2gConfig = JSON.parse(widgetStyleConfig.textContent);
             }
 
-            [].forEach.call(document.getElementsByClassName('nl2g-fields'), function (element) {
+            [].forEach.call(document.getElementsByClassName('n2go-colorField'), function (element) {
                 var field = element.name.split('.');
                 var style = getStyle(field[1], n2gConfig[field[0]]['style']);
 
-                element.value = element.style.backgroundColor = style;
-                if (element.value !== '') {
-                    element.style.color = picker.RGBToHSL(picker.unpack(element.value))[2] > 0.5 ? '#000' : '#fff';
+                if (style !== '') {
+                    jQuery(element.parentElement).colorpicker({ color: style, format: 'hex' });
+                } else  {
+                    jQuery(element.parentElement).colorpicker({ color: element.value, format: 'hex' });
                 }
             });
 
@@ -66,7 +66,7 @@ window.addEventListener('load', function () {
     function updateForm () {
         clearTimeout(timer);
         timer = setTimeout(function () {
-            document.getElementById('n2g_form').remove();
+            jQuery('#widgetPreview form').remove();
             n2g('subscribe:createForm', n2gConfig);
         }, 200);
 
@@ -109,44 +109,22 @@ window.addEventListener('load', function () {
                 widgetPreview.style.display = 'block';
                 widgetStyleConfig.style.display = widgetSourceCode.style.display = 'none';
         }
-        this.className = 'btn-primary btn-nl2go';
-        [].forEach.call(jQuery('#'+this.id).siblings(), function(button) {
-            button.className = '';
-        });
+
     }
-
-    jQuery('.color-picker').focus(function () {
-        input = this;
-        picker.linkTo(function () {}).setColor('#000');
-        picker.linkTo(function (color) {
-            input.style.backgroundColor = color;
-            input.style.color = picker.RGBToHSL(picker.unpack(color))[2] > 0.5 ? '#000' : '#fff';
-            input.value = color;
-
-            updateConfig(input);
-            updateForm();
-
-        }).setColor(input.value);
-    }).blur(function () {
-        input = this;
-        picker.linkTo(function () {}).setColor('#000');
-        if (!input.value) {
-            input.style.backgroundColor = '';
-            input.style.color = '';
-        }
-        updateConfig(input);
-        updateForm();
-    });
 
     if (formUniqueCode !== '') {
         n2gSetUp();
 
-        [].forEach.call(document.getElementById('n2gButtons').children, function (button) {
-            button.addEventListener('click', show);
+        jQuery('.n2go-colorField').val(function(index, value) {
+            return value.replace('#', '');
         });
 
-        document.getElementById('colorPicker').addEventListener('click', function () {
-            input && input.focus();
+        jQuery('.n2go-cp').colorpicker().on('changeColor', function(ev){
+            input = this.children[1];
+            updateConfig(input);
+            updateForm();
         });
+
+        show();
     }
-});
+}),1);

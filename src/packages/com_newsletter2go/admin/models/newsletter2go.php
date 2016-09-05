@@ -60,13 +60,14 @@ class Newsletter2GoModelNewsletter2Go extends JModelList
 
     /**
      * @param string $formKey
-     * @return array
+     * @return boolean|array
      */
     public function getForms($authKey = '')
     {
-        $result = array();
+        $result = false;
 
         if (strlen($authKey) > 0) {
+            $result = array();
             $form = $this->execute('forms/all?_expand=1', array());
             if (isset($form['status']) && $form['status'] >= 200 && $form['status'] < 300) {
                 foreach ($form['value'] as $key => $value){
@@ -202,8 +203,12 @@ class Newsletter2GoModelNewsletter2Go extends JModelList
 
         $response = json_decode($json_response);
 
-        $this->setOption('accessToken', $response->access_token);
-        $this->setOption('refreshToken', $response->refresh_token);
+        if(isset($response->access_token) && !empty($response->access_token)){
+            $this->setOption('accessToken', $response->access_token);
+        }
+        if(isset($response->refresh_token) && !empty($response->refresh_token)) {
+            $this->setOption('refreshToken', $response->refresh_token);
+        }
 
         return true;
     }

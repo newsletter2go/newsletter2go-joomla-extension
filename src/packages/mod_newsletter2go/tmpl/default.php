@@ -2,22 +2,17 @@
 
 defined('_JEXEC') or die;
 
-echo $widget; 
 ?>
-<script>
-function n2goAjaxFormSubmit() {
-    jQuery.ajax({
-        url: 'index.php?option=com_newsletter2go&task=ajaxSubscribe&format=ajax',
-        method: 'POST',
-        data: jQuery("#n2g_form").serialize(),
-        success: function (response) {
-            var data = JSON.parse(response);
-            if (data.success) {
-                jQuery("#n2goResponseArea").html(data.message);
-            } else {
-                jQuery("#n2goResponseArea").find('.message').text(data.message);
-            }
-        }
-    });
-}
+<script id="n2g_script">
+        window.addEventListener('load', function () {
+
+            !function (e, t, n, c, r, a, i) {
+                e.Newsletter2GoTrackingObject = r, e[r] = e[r] || function () {
+                        (e[r].q = e[r].q || []).push(arguments)
+                    }, e[r].l = 1 * new Date, a = t.createElement(n), i = t.getElementsByTagName(n)[0], a.async = 1, a.src = c, i.parentNode.insertBefore(a, i)
+            }(window, document, "script", "//static-staging.newsletter2go.com/utils.js", "n2g");
+            n2g('create', '<?=$formUniqueCode?>');
+            n2g('subscribe:createForm', <?= $widgetConfig ?>);
+
+        });
 </script>

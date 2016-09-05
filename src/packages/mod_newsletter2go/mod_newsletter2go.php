@@ -4,7 +4,7 @@ defined('_JEXEC') or die;
 
 require_once __DIR__ . '/helper.php';
 
-$widget = ModNewsletter2GoHelper::getWidget();
-$widget = ($widget ? $widget->value : '');
+$widgetConfig = ModNewsletter2GoHelper::getOption('configFormStyles', '{}');
+$formUniqueCode = ModNewsletter2GoHelper::getOption('formUniqueCode', '');
 
 require( JModuleHelper::getLayoutPath('mod_newsletter2go'));

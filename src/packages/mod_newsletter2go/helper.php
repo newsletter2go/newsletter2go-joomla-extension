@@ -5,14 +5,27 @@ defined('_JEXEC') or die;
 class ModNewsletter2GoHelper
 {
 
-    public static function getWidget()
+    /**
+     * Fetches option from database and json_decodes it if flag $decode is true
+     *
+     * @param string $name
+     * @param string $default
+     * @param bool|false $decode
+     * @return mixed
+     */
+    public static function getOption($name, $default = '', $decode = false)
     {
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
-        $query->select('`value`')->from('#__newsletter2go')->where("`name`= 'widget'");
-        $db->setQuery((string) $query);
+        $query->select('`value`');
+        $query->from('#__newsletter2go');
+        $query->where("`name` = '$name'");
+        $db->setQuery($query);
 
-        return $db->loadObject();
+        $object = $db->loadObject();
+        $value = $object ? $object->value : $default;
+
+        return $decode === true ? json_decode($value, true) : $value;
     }
 
 }
