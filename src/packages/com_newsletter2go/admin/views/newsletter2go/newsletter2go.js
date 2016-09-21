@@ -1,4 +1,4 @@
-window.addEventListener('load',  setTimeout(function () {
+window.addEventListener('load', function () {
     var formUniqueCode = document.getElementById('formUniqueCode').value.trim(),
         widgetPreview = document.getElementById('widgetPreview');
 
@@ -127,4 +127,4 @@ window.addEventListener('load',  setTimeout(function () {
 
         show();
     }
-}),1);
+});
