@@ -12,7 +12,7 @@ defined('_JEXEC') or die;
             <div class="panel-body">
                 <div class="n2go-row">
                     <div class="n2go-login"><span><?php echo JText::_('COM_NEWSLETTER2GO_CONNECT'); ?></span></div>
-                    <div class="n2go-block">
+                    <div class="n2go-block25">
                         <?php if ($this->forms === false){ ?>
                         <div class="n2go-btn">
                             <input type="hidden" name="apiKey" placeholder="<?php echo JText::_('COM_NEWSLETTER2GO_APIKEY_PLACEHOLDER');?>" value="<?php echo $this->apiKey; ?>" style="width:300px" readonly>
@@ -21,9 +21,13 @@ defined('_JEXEC') or die;
                         <?php } else { ?>
                         <span class="n2go-label-success"> <span class="fa fa-check margin-right-5"></span>
 							<span>Successfully connected</span></span>
+                            <br><br> <div>
+                                <input onclick="Joomla.submitbutton('newsletter2go.reset')" value="<?php echo JText::_('COM_NEWSLETTER2GO_DISCONNECT'); ?>" class="n2go-disconnect-btn" name="resetValues"/>
+                            </div>
                         <?php } ?>
                     </div>
                 </div>
+                <?php if ($this->forms !== false) { ?>
                 <div class="n2go-row">
                     <div class="n2go-block50">
                         <span><?php echo JText::_('COM_NEWSLETTER2GO_CHOOSE_THE_CONNECTED_FORM'); ?></span>
@@ -95,39 +99,40 @@ defined('_JEXEC') or die;
                         </div>
                     </div>
                 </div>
+            <?php } ?>
             </div>
         </div>
-
-    <div class="n2go-block50 main-block">
-        <div class="panel">
-            <div class="panel-heading text-center">
-                <h3><?php echo JText::_('COM_NEWSLETTER2GO_WIDGET_PREVIEW_TITLE'); ?></h3>
-            </div>
-            <div class="panel-body">
-                <ul class="nav nav-tabs">
-                    <li class="active"><a href="#preview" data-toggle="tab" aria-expanded="true"><?php echo JText::_('COM_NEWSLETTER2GO_WIDGET_PREVIEW'); ?></a></li>
-                    <li class=""><a href="#source" data-toggle="tab" aria-expanded="false"><?php echo JText::_('COM_NEWSLETTER2GO_WIDGET_SOURCE'); ?></a></li>
-                </ul>
-                <!-- Tab panes-->
-                <div class="tab-content">
-                    <div id="preview" role="tabpanel" class="tab-pane active">
-                        <?php if(!isset($this->_errors['formId']) === true){ ?>
-                            <div id="widgetPreview"><script id="n2g_script"></script></div>
-<!--                            <textarea id="widgetSourceCode" name="widgetSourceCode">--><?php //echo $this->widget; ?><!--</textarea>-->
-                        <?php } else { ?>
-                            <h3 class="n2go-error">
-                            <?php foreach($this->_errors as $errorMessage){
-                                    echo $errorMessage . '<br/>';
-                               } ?></h3>
-                        <?php } ?>
-                    </div>
-                    <div id="source" role="tabpanel" class="tab-pane">
-                        <textarea id="widgetStyleConfig" name="widgetStyleConfig"><?php echo $this->configFormStyles; ?></textarea>
+    <?php if ($this->forms !== false) { ?>
+        <div class="n2go-block50 main-block">
+            <div class="panel">
+                <div class="panel-heading text-center">
+                    <h3><?php echo JText::_('COM_NEWSLETTER2GO_WIDGET_PREVIEW_TITLE'); ?></h3>
+                </div>
+                <div class="panel-body">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#preview" data-toggle="tab" aria-expanded="true"><?php echo JText::_('COM_NEWSLETTER2GO_WIDGET_PREVIEW'); ?></a></li>
+                        <li class=""><a href="#source" data-toggle="tab" aria-expanded="false"><?php echo JText::_('COM_NEWSLETTER2GO_WIDGET_SOURCE'); ?></a></li>
+                    </ul>
+                    <!-- Tab panes-->
+                    <div class="tab-content">
+                        <div id="preview" role="tabpanel" class="tab-pane active">
+                            <?php if (!isset($this->_errors['formId']) === true){ ?>
+                                <div id="widgetPreview"><script id="n2g_script"></script></div>
+                            <?php } else { ?>
+                                <h3 class="n2go-error">
+                                <?php foreach($this->_errors as $errorMessage){
+                                        echo $errorMessage . '<br/>';
+                                   } ?></h3>
+                            <?php } ?>
+                        </div>
+                        <div id="source" role="tabpanel" class="tab-pane">
+                            <textarea id="widgetStyleConfig" name="widgetStyleConfig"><?php echo $this->configFormStyles; ?></textarea>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    <?php } ?>
     <input type="hidden" name="task" value="" />
     <?php echo JHtml::_('form.token'); ?>
 </div>

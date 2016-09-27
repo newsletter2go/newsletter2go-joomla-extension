@@ -80,4 +80,20 @@ class Newsletter2GoControllerNewsletter2Go extends JControllerForm
         return $randomString;
     }
 
+    /**
+     * Reset the values that are set when callback is made
+     */
+    public function reset(){
+
+        $model = $this->getModel();
+
+        $model->setOption('authKey', null);
+        $model->setOption('accessToken', null);
+        $model->setOption('refreshToken', null);
+        $model->setOption('formUniqueCode', null);
+        $model->setOption('configFormStyles', null);
+
+        $this->display();
+    }
+
 }

@@ -67,9 +67,9 @@ class Newsletter2GoModelNewsletter2Go extends JModelList
         $result = false;
 
         if (strlen($authKey) > 0) {
-            $result = array();
             $form = $this->execute('forms/all?_expand=1', array());
             if (isset($form['status']) && $form['status'] >= 200 && $form['status'] < 300) {
+                $result = array();
                 foreach ($form['value'] as $key => $value){
                     $result[$key]['name'] = $value['name'];
                     $result[$key]['hash'] = $value['hash'];
