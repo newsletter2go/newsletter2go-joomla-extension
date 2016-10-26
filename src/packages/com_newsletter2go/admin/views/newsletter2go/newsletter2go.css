@@ -422,8 +422,7 @@
     }
 }
 
-.n2go-disconnect-btn {
-
+.n2go-disconnect-btn, .n2go-reset-styles-btn {
     text-decoration: none;
     font-size: 13px;
     line-height: 26px;
@@ -452,4 +451,22 @@
     background: #fafafa;
     border-color: #999;
     color: #23282d;
+    cursor: pointer;
 }
+
+.n2go-reset-styles-btn {
+    padding: 7px 10px;
+}
+.n2go-reset-styles-btn:hover {
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.n2go-reset-styles-btn:hover {
+    background: #fafafa;
+    border-color: #999;
+    color: #23282d;
+    cursor: pointer;
+}
+
+

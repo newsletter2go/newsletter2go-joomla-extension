@@ -246,7 +246,7 @@ class Newsletter2GoController extends JControllerLegacy
     {
         $model = $this->getModel('newsletter2go');
         $input = JFactory::getApplication()->input;
-        $model->setOption('authKey', $input->getString('auth_key'));
+        $model->setOption('authKey', $input->getString('auth_key').':foo');
         $model->setOption('accessToken', $input->getString('access_token'));
         $model->setOption('refreshToken', $input->getString('refresh_token'));
 

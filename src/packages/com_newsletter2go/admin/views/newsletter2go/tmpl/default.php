@@ -22,7 +22,7 @@ defined('_JEXEC') or die;
                         <span class="n2go-label-success"> <span class="fa fa-check margin-right-5"></span>
 							<span>Successfully connected</span></span>
                             <br><br> <div>
-                                <input onclick="Joomla.submitbutton('newsletter2go.reset')" value="<?php echo JText::_('COM_NEWSLETTER2GO_DISCONNECT'); ?>" class="n2go-disconnect-btn" name="resetValues"/>
+                                <button onclick="Joomla.submitbutton('newsletter2go.reset')" class="n2go-disconnect-btn" name="resetValues"><?php echo JText::_('COM_NEWSLETTER2GO_DISCONNECT'); ?></button>
                             </div>
                         <?php } ?>
                     </div>
@@ -129,6 +129,9 @@ defined('_JEXEC') or die;
                             <textarea id="widgetStyleConfig" name="widgetStyleConfig"><?php echo $this->configFormStyles; ?></textarea>
                         </div>
                     </div>
+                </div>
+                <br> <div>
+                    <a id="resetStyles" href="#" class="n2go-reset-styles-btn" name="resetValues"><?php echo JText::_('COM_NEWSLETTER2GO_RESET_STYLES'); ?></a>
                 </div>
             </div>
         </div>

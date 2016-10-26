@@ -3,7 +3,6 @@ window.addEventListener('load', function () {
         widgetPreview = document.getElementById('widgetPreview');
 
     var widgetStyleConfig = document.getElementById('widgetStyleConfig'),
-        widgetSourceCode = document.getElementById('widgetSourceCode'),
         input,
         timer = 0,
         n2gSetUp = function  () {
@@ -18,6 +17,7 @@ window.addEventListener('load', function () {
                 var style = getStyle(field[1], n2gConfig[field[0]]['style']);
 
                 if (style !== '') {
+                    style = style.replace('!important', '');
                     jQuery(element.parentElement).colorpicker({ color: style, format: 'hex' });
                 } else  {
                     jQuery(element.parentElement).colorpicker({ color: element.value, format: 'hex' });
@@ -27,9 +27,6 @@ window.addEventListener('load', function () {
             n2g('create', formUniqueCode);
             n2g('subscribe:createForm', n2gConfig);
 
-            timer = setTimeout(function () {
-                widgetSourceCode.textContent = widgetPreview.firstChild.outerHTML;
-            }, 2000);
         };
 
     function getStyle (field, str) {
@@ -50,7 +47,7 @@ window.addEventListener('load', function () {
             property = formPropertyArray[0],
             attribute = 'style',
             cssProperty = formPropertyArray[1],
-            cssValue = element.value;
+            cssValue = element.value + '!important';
 
         var styleProperties;
         if (n2gConfig[property][attribute] == '') {
@@ -69,8 +66,6 @@ window.addEventListener('load', function () {
             jQuery('#widgetPreview form').remove();
             n2g('subscribe:createForm', n2gConfig);
         }, 200);
-
-        widgetSourceCode.textContent = widgetPreview.firstChild.outerHTML;
     }
 
     function updateString (string, cssProperty, cssValue) {
@@ -95,23 +90,6 @@ window.addEventListener('load', function () {
         return stylePropertiesArray.join(';') + ';';
     }
 
-    function show () {
-        switch(this.id) {
-            case 'btnShowConfig':
-                widgetStyleConfig.style.display = 'block';
-                widgetPreview.style.display = widgetSourceCode.style.display = 'none';
-                break;
-            case 'btnShowSource':
-                widgetSourceCode.style.display = 'block';
-                widgetPreview.style.display = widgetStyleConfig.style.display = 'none';
-                break;
-            default:
-                widgetPreview.style.display = 'block';
-                widgetStyleConfig.style.display = widgetSourceCode.style.display = 'none';
-        }
-
-    }
-
     if (formUniqueCode !== '') {
         n2gSetUp();
 
@@ -124,7 +102,21 @@ window.addEventListener('load', function () {
             updateConfig(input);
             updateForm();
         });
-
-        show();
+		
     }
+
+    document.getElementById('resetStyles').addEventListener("click", function (e){
+        e.preventDefault();
+        var defaultConfig = JSON.stringify(n2gConfigConst, null, 2);
+        jQuery.ajax({
+            type: "POST",
+            url: "index.php?option=com_newsletter2go&task=newsletter2go.resetFormStyles",
+            data: {style: defaultConfig},
+            success: function (data) {
+                location.reload();
+            },
+
+        });
+    });
+
 });

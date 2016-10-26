@@ -18,7 +18,6 @@ defined('_JEXEC') or die;
  */
 class Newsletter2GoControllerNewsletter2Go extends JControllerForm
 {
-
     /**
      * Dummy method to redirect back to standard controller
      *
@@ -96,4 +95,15 @@ class Newsletter2GoControllerNewsletter2Go extends JControllerForm
         $this->display();
     }
 
+    /**
+     * This function sets widgetStyleConfig to default value
+     */
+    public function resetFormStyles(){
+
+        $model = $this->getModel();
+        $style = $this->input->post->getString('style', '');
+        $model->setOption('configFormStyles', $style);
+
+        return "success";
+    }
 }
