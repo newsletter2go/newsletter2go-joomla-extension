@@ -109,15 +109,32 @@ defined('_JEXEC') or die;
                     <h3><?php echo JText::_('COM_NEWSLETTER2GO_WIDGET_PREVIEW_TITLE'); ?></h3>
                 </div>
                 <div class="panel-body">
-                    <ul class="nav nav-tabs">
-                        <li class="active"><a href="#preview" data-toggle="tab" aria-expanded="true"><?php echo JText::_('COM_NEWSLETTER2GO_WIDGET_PREVIEW'); ?></a></li>
-                        <li class=""><a href="#source" data-toggle="tab" aria-expanded="false"><?php echo JText::_('COM_NEWSLETTER2GO_WIDGET_SOURCE'); ?></a></li>
+                    <ul id="n2gButtons" class="nav nav-tabs">
+                        <?php $active = false;
+                        if ($this->forms[$this->formUniqueCode]['type_subscribe']) {
+                            ?>
+                            <li id="btnShowPreviewSubscribe" class="active">
+                                <a href="#preview1" data-toggle="tab" aria-expanded="true"><?php echo JText::_('COM_NEWSLETTER2GO_WIDGET_PREVIEW_SUBSCRIPTION_FORM'); ?></a>
+                            </li>
+                            <?php
+                            $active = true;
+                        }
+                        if ($this->forms[$this->formUniqueCode]['type_unsubscribe']) {
+                            ?>
+                            <li id="btnShowPreviewUnsubscribe"  <?= (!$active ? 'class="active"' : '') ?>>
+                                <a href="#preview2" data-toggle="tab" aria-expanded="true"><?php echo JText::_('COM_NEWSLETTER2GO_WIDGET_PREVIEW_UNSUBSCRIPTION_FORM'); ?></a>
+                            </li>
+                        <?php } ?>
+                        <li id="btnShowConfig" class="">
+                            <a href="#source" data-toggle="tab" aria-expanded="false"><?php echo JText::_('COM_NEWSLETTER2GO_WIDGET_SOURCE'); ?></a>
+                        </li>
                     </ul>
                     <!-- Tab panes-->
-                    <div class="tab-content">
-                        <div id="preview" role="tabpanel" class="tab-pane active">
+                    <div class="tab-content" id="preview-form-panel">
+                        <div id="preview1" role="tabpanel" class="tab-pane active">
+
                             <?php if (!isset($this->_errors['formId']) === true){ ?>
-                                <div id="widgetPreview"><script id="n2g_script"></script></div>
+                                <div id="widgetPreviewSubscribe"><script id="n2g_script_subscribe"></script></div>
                             <?php } else { ?>
                                 <h3 class="n2go-error">
                                 <?php foreach($this->_errors as $errorMessage){
@@ -125,6 +142,18 @@ defined('_JEXEC') or die;
                                    } ?></h3>
                             <?php } ?>
                         </div>
+
+                        <div id="preview2" role="tabpanel" class="tab-pane">
+                            <?php if (!isset($this->_errors['formId']) === true){ ?>
+                                <div id="widgetPreviewUnsubscribe"><script id="n2g_script_unsubscribe"></script></div>
+                            <?php } else { ?>
+                                <h3 class="n2go-error">
+                                    <?php foreach($this->_errors as $errorMessage){
+                                        echo $errorMessage . '<br/>';
+                                    } ?></h3>
+                            <?php } ?>
+                        </div>
+
                         <div id="source" role="tabpanel" class="tab-pane">
                             <textarea id="widgetStyleConfig" name="widgetStyleConfig"><?php echo $this->configFormStyles; ?></textarea>
                         </div>

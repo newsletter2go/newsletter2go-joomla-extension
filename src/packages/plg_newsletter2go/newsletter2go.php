@@ -29,18 +29,44 @@ class plgContentNewsletter2Go extends JPLugin
                 if (isset($match[1])) {
                     $options = explode(" ", trim($match[1]));
                     $type = explode("=", trim($options[0]));
-                    if(isset($options[1])) {
+                    if (isset($options[1])) {
                         $delay = explode("=", trim($options[1]));
+                    }
+                    if (isset($options[2])) {
+                        $data = explode("=", trim($options[2]));
+                        if($type[1] == 'subscribe' && $delay[1] == 'popup' && $data[0] == 'delay'){
+                            $subscribeDelay = $data[1];
+                        }
                     }
                     $formStyle = self::getOption('configFormStyles');
                     if (isset($type[1]) && $type[1] == 'popup') {
+
                         if (!empty($delay) && $delay[0] == 'delay'){
                             $n2gParams = '\'subscribe:createPopup\', ' .$formStyle->value. ', '.$delay[1];
                         } else {
                             $n2gParams = '\'subscribe:createPopup\', ' .$formStyle->value. ', '.self::DELAY_DEFAULT;
                         }
+
                     } else if ((isset($type[1]) && $type[1] == 'plugin') || empty($type[0])){
+
                         $n2gParams = '\'subscribe:createForm\', ' .$formStyle->value;
+
+                    } else if ((isset($type[1]) && $type[0] == 'form_type')){
+
+                        if($type[1] == 'subscribe'){
+                            if (isset($subscribeDelay)) {
+                                if (!empty($subscribeDelay)){
+                                    $n2gParams = '\'subscribe:createPopup\', ' .$formStyle->value. ', '.$subscribeDelay;
+                                } 
+                            } else if (!empty($delay) && $delay[1] == 'popup'){
+                                $n2gParams = '\'subscribe:createPopup\', ' .$formStyle->value. ', '.self::DELAY_DEFAULT;
+                            } else {
+                                $n2gParams = '\'subscribe:createForm\', ' .$formStyle->value;
+                            }
+
+                        } else if ($type[1] == 'unsubscribe'){
+                            $n2gParams = '\'unsubscribe:createForm\', ' .$formStyle->value;
+                        }
                     }
                 }
 
@@ -50,7 +76,7 @@ class plgContentNewsletter2Go extends JPLugin
 
                 if (isset($code->value) && isset($n2gParams) && !empty($code->value)) {
                     $form = '<script id="n2g_script">
-                !function(e,t,n,c,r,a,i){e.Newsletter2GoTrackingObject=r,e[r]=e[r]||function(){(e[r].q=e[r].q||[]).push(arguments)},e[r].l=1*new Date,a=t.createElement(n),i=t.getElementsByTagName(n)[0],a.async=1,a.src=c,i.parentNode.insertBefore(a,i)}(window,document,"script","//static-staging.newsletter2go.com/utils.js","n2g");
+                !function(e,t,n,c,r,a,i){e.Newsletter2GoTrackingObject=r,e[r]=e[r]||function(){(e[r].q=e[r].q||[]).push(arguments)},e[r].l=1*new Date,a=t.createElement(n),i=t.getElementsByTagName(n)[0],a.async=1,a.src=c,i.parentNode.insertBefore(a,i)}(window,document,"script","//static.newsletter2go.com/utils.js","n2g");
                 n2g(\'create\',\'' . $code->value . '\');
                 n2g(' . $n2gParams . ');
                         </script>';

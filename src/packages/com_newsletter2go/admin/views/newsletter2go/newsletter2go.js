@@ -1,6 +1,7 @@
 window.addEventListener('load', function () {
-    var formUniqueCode = document.getElementById('formUniqueCode').value.trim(),
-        widgetPreview = document.getElementById('widgetPreview');
+    var formUniqueCode = document.getElementById('formUniqueCode').value.trim();
+       
+ 
 
     var widgetStyleConfig = document.getElementById('widgetStyleConfig'),
         input,
@@ -10,6 +11,7 @@ window.addEventListener('load', function () {
                 widgetStyleConfig.textContent = JSON.stringify(n2gConfig, null, 2);
             } else {
                 n2gConfig = JSON.parse(widgetStyleConfig.textContent);
+
             }
 
             [].forEach.call(document.getElementsByClassName('n2go-colorField'), function (element) {
@@ -25,7 +27,13 @@ window.addEventListener('load', function () {
             });
 
             n2g('create', formUniqueCode);
-            n2g('subscribe:createForm', n2gConfig);
+
+            if (jQuery('#widgetPreviewSubscribe').length > 0) {
+                n2g('subscribe:createForm', n2gConfig, 'n2g_script_subscribe');
+            }
+            if (jQuery('#widgetPreviewUnsubscribe').length > 0) {
+                n2g('unsubscribe:createForm', n2gConfig, 'n2g_script_unsubscribe');
+            }
 
         };
 
@@ -62,10 +70,19 @@ window.addEventListener('load', function () {
 
     function updateForm () {
         clearTimeout(timer);
-        timer = setTimeout(function () {
-            jQuery('#widgetPreview form').remove();
-            n2g('subscribe:createForm', n2gConfig);
-        }, 200);
+        if (jQuery('#widgetPreviewSubscribe').length > 0) {
+            timer = setTimeout(function () {
+                jQuery('#widgetPreviewSubscribe form').remove();
+                n2g('subscribe:createForm', n2gConfig, 'n2g_script_subscribe');
+            }, 100);
+        }
+        if (jQuery('#widgetPreviewUnsubscribe').length > 0) {
+            timer = setTimeout(function () {
+                jQuery('#widgetPreviewUnsubscribe form').remove();
+                n2g('unsubscribe:createForm', n2gConfig, 'n2g_script_unsubscribe');
+            }, 100);
+        }
+
     }
 
     function updateString (string, cssProperty, cssValue) {
@@ -118,5 +135,6 @@ window.addEventListener('load', function () {
 
         });
     });
+ 
 
 });

@@ -59,20 +59,24 @@ class Newsletter2GoModelNewsletter2Go extends JModelList
     }
 
     /**
-     * @param string $formKey
      * @return boolean|array
      */
-    public function getForms($authKey = '')
+    public function getForms()
     {
+        $authKey = $this->getOption('authKey');
+
         $result = false;
 
         if (strlen($authKey) > 0) {
             $form = $this->execute('forms/all?_expand=1', array());
             if (isset($form['status']) && $form['status'] >= 200 && $form['status'] < 300) {
                 $result = array();
-                foreach ($form['value'] as $key => $value){
+                foreach ($form['value'] as $value){
+                    $key = $value['hash'];
                     $result[$key]['name'] = $value['name'];
                     $result[$key]['hash'] = $value['hash'];
+                    $result[$key]['type_subscribe'] = $value['type_subscribe'];
+                    $result[$key]['type_unsubscribe'] = $value['type_unsubscribe'];
                 }
             }
         }
@@ -119,10 +123,25 @@ class Newsletter2GoModelNewsletter2Go extends JModelList
      */
     private function execute($action, $post)
     {
-        $this->refreshTokens();
         $access_token = $this->getOption('accessToken');
+        $responseJson = $this->executeRequest($action, $access_token, $post);
+
+        //access_token is deprecated
+        if ($responseJson['status_code'] == 403 || $responseJson['status_code'] == 401 ){
+
+            $this->refreshTokens();
+            $access_token = $this->getOption('accessToken');
+            $responseJson = $this->executeRequest($action, $access_token, $post);
+        }
+
+        return $responseJson;
+
+    }
+
+    private function executeRequest($action, $access_token, $post){
+
         $apiUrl = self::N2GO_API_URL;
-        
+
         $cURL = curl_init();
         curl_setopt($cURL, CURLOPT_URL, $apiUrl.$action);
         curl_setopt($cURL, CURLOPT_RETURNTRANSFER, true);
@@ -138,12 +157,17 @@ class Newsletter2GoModelNewsletter2Go extends JModelList
             curl_setopt($cURL, CURLOPT_POST, 1);
             curl_setopt($cURL, CURLOPT_POSTFIELDS, $postData);
         }
+        
         curl_setopt($cURL, CURLOPT_SSL_VERIFYPEER, false);
-
         $response = curl_exec($cURL);
+        $response = json_decode($response, true);
+        $status = curl_getinfo($cURL);
+        $response['status_code'] = $status['http_code'];
+
         curl_close($cURL);
 
-        return json_decode($response, true);
+        return $response;
+
     }
 
     /**
@@ -173,8 +197,7 @@ class Newsletter2GoModelNewsletter2Go extends JModelList
     /**
      * Creates request and returns response, refresh access token
      *
-     * @return array
-     * @internal param mixed $params
+     * @return bool
      */
     function refreshTokens() {
 

@@ -12,7 +12,7 @@ defined('_JEXEC') or die;
                     }, e[r].l = 1 * new Date, a = t.createElement(n), i = t.getElementsByTagName(n)[0], a.async = 1, a.src = c, i.parentNode.insertBefore(a, i)
             }(window, document, "script", "//static-staging.newsletter2go.com/utils.js", "n2g");
             n2g('create', '<?=$formUniqueCode?>');
-            n2g('subscribe:createForm', <?= $widgetConfig ?>);
+            n2g('<?= $n2gParams ?>', <?= $widgetConfig ?>);
 
         });
 </script>
