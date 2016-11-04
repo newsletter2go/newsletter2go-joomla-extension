@@ -7,6 +7,7 @@ require_once __DIR__ . '/helper.php';
 $widgetConfig = ModNewsletter2GoHelper::getOption('configFormStyles', '{}');
 $formUniqueCode = ModNewsletter2GoHelper::getOption('formUniqueCode', '');
 $widget = get_object_vars($module);
+$uniqueId = uniqid();
 
 if (isset($widget['params'])){
 
