@@ -19,7 +19,6 @@ window.addEventListener('load', function () {
                 var style = getStyle(field[1], n2gConfig[field[0]]['style']);
 
                 if (style !== '') {
-                    style = style.replace('!important', '');
                     jQuery(element.parentElement).colorpicker({ color: style, format: 'hex' });
                 } else  {
                     jQuery(element.parentElement).colorpicker({ color: element.value, format: 'hex' });
@@ -55,7 +54,7 @@ window.addEventListener('load', function () {
             property = formPropertyArray[0],
             attribute = 'style',
             cssProperty = formPropertyArray[1],
-            cssValue = element.value + '!important';
+            cssValue = element.value;
 
         var styleProperties;
         if (n2gConfig[property][attribute] == '') {
@@ -131,7 +130,7 @@ window.addEventListener('load', function () {
             data: {style: defaultConfig},
             success: function (data) {
                 location.reload();
-            },
+            }
 
         });
     });
