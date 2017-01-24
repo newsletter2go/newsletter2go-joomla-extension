@@ -4,6 +4,29 @@ defined('_JEXEC') or die;
 <form action="<?php echo JRoute::_('index.php?option=com_newsletter2go'); ?>" method="post" name="adminForm" id="adminForm">
 <input type="hidden" id="hiddenRequiredLabel" value="<?php echo JText::_('COM_NEWSLETTER2GO_REQUIRED'); ?>" />
 <div class="n2go-section">
+    <div class="n2go-block main-block" style="width:60%; margin-bottom: 30px;">
+        <div class="panel">
+            <div class="panel-heading text-center">
+                <h3>So benutzen Sie die Anmeldeformulare</h3>
+            </div>
+            <div class="n2go-row">
+                <div class="n2go-block100">
+                    <h4>in Beiträgen und Seiten</h4>
+                    <p>Über den Shortcode <code>{newsletter2go}</code> können Sie ihr
+                        konfiguriertes Anmeldeformular in allen Seiten und Beiträgen über den Editor einbinden.<br>
+                        <br>
+                        Durch den Parameter <code>{newsletter2go form_type=subscribe}</code> bzw. <code>{newsletter2go form_type=unsubscribe}</code>
+                        erzeugen Sie ein An- bzw. Abmeldeformular, soweit dieser Formular-Typ im Newsletter2Go-System ebenfalls aktiviert wurde.
+                        Standardmäßig wird ein Anmeldeformular erzeugt.<br><br>
+                        Mit der zusätzlichen Option <code>{newsletter2go type=popup}</code> wird aus dem
+                        eingebetten Formular ein Popup welches auf der spezifischen Seite eingeblendet wird.</br>
+                        Über  <code>{newsletter2go type=popup delay=10}</code> können Sie dem Pop-up noch eine Zeitangabe mitgeben, wann das Pop-up sich öffnen soll.
+                    </p>
+                </div>
+            </div>
+            <div style="clear: both"></div>
+        </div>
+    </div>
     <div class="n2go-block50 main-block">
         <div class="panel">
             <div class="panel-heading text-center">
