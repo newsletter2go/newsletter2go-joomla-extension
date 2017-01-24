@@ -12,7 +12,7 @@ jimport('joomla.application.component.view');
 class Newsletter2GoViewNewsletter2Go extends JViewLegacy
 {
 
-    const N2GO_INTEGRATION_URL = 'https://ui-staging.newsletter2go.com/integrations/connect/JO/';
+    const N2GO_INTEGRATION_URL = 'https://ui.newsletter2go.com/integrations/connect/JO/';
 
     /**
      * Display method of Newsletter2Go view

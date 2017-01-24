@@ -5,7 +5,7 @@ jimport('joomla.application.component.model');
 class Newsletter2GoModelNewsletter2Go extends JModelList
 {
 
-    const N2GO_API_URL = 'https://api-staging.newsletter2go.com/';
+    const N2GO_API_URL = 'https://api.newsletter2go.com/';
     const N2GO_REFRESH_GRANT_TYPE = 'https://nl2go.com/jwt_refresh';
 
     /**
