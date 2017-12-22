@@ -20,7 +20,7 @@ class Newsletter2GoController extends JControllerLegacy
      */
     const ERRNO_PLUGIN_OTHER = 'int-1-600';
 
-    public function display($cacheable = false, $urlparams = array())
+    public function display($cacheable = false, $urlparams = [])
     {
         $view = $this->getView('widget', 'html');
         $view->display();
@@ -34,7 +34,7 @@ class Newsletter2GoController extends JControllerLegacy
     {
         try {
             if (!$this->authenticate()) {
-                echo json_encode(array('success' => 0, 'message' => 'Authentication faild!'));
+                echo json_encode(['success' => 0, 'message' => 'Authentication failed!']);
                 return;
             }
 
@@ -42,7 +42,7 @@ class Newsletter2GoController extends JControllerLegacy
             $lang = JFactory::getApplication()->input->getString('lang');
 
             if (!$id || !$lang) {
-                echo json_encode(array('success' => 0, 'message' => 'Parameters missing!'));
+                echo json_encode(['success' => 0, 'message' => 'Parameters missing!']);
                 return;
             }
 
@@ -50,14 +50,14 @@ class Newsletter2GoController extends JControllerLegacy
             $post = $model->getPost($id, $lang);
 
             echo json_encode(
-                array(
+                [
                     'success' => $post ? true : false,
                     'message' => $post ? 'OK' : "Post with id '$id' and lang '$lang' not found.",
                     'post' => $post,
-                )
+                ]
             );
         } catch (\Exception $exc) {
-            echo json_encode(array('success' => false, 'message' => $exc->getMessage(), 'errorcode' => self::ERRNO_PLUGIN_OTHER));
+            echo json_encode(['success' => false, 'message' => $exc->getMessage(), 'errorcode' => self::ERRNO_PLUGIN_OTHER]);
         }
     }
 
@@ -68,15 +68,15 @@ class Newsletter2GoController extends JControllerLegacy
     {
         try {
             if (!$this->authenticate()) {
-                echo json_encode(array('success' => 0, 'message' => 'Authentication faild!'));
+                echo json_encode(['success' => 0, 'message' => 'Authentication faild!']);
                 return;
             }
 
             $model = $this->getModel('newsletter2go');
 
-            echo json_encode(array('success' => 1, 'message' => 'OK!', 'languages' => $model->getLanguages()));
+            echo json_encode(['success' => 1, 'message' => 'OK!', 'languages' => $model->getLanguages()]);
         } catch (\Exception $exc) {
-            echo json_encode(array('success' => false, 'message' => $exc->getMessage(), 'errorcode' => self::ERRNO_PLUGIN_OTHER));
+            echo json_encode(['success' => false, 'message' => $exc->getMessage(), 'errorcode' => self::ERRNO_PLUGIN_OTHER]);
         }
     }
 
@@ -87,16 +87,16 @@ class Newsletter2GoController extends JControllerLegacy
     {
         try {
             if (!$this->authenticate()) {
-                echo json_encode(array('success' => 0, 'message' => 'Authentication faild!'));
+                echo json_encode(['success' => 0, 'message' => 'Authentication faild!']);
                 return;
             }
 
             $model = $this->getModel('newsletter2go');
             $obj = json_decode($model->getExtensionVersion()->manifest_cache);
 
-            echo json_encode(array('success' => 1, 'message' => 'OK!', 'version' => str_replace('.', '', $obj->version)));
+            echo json_encode(['success' => 1, 'message' => 'OK!', 'version' => str_replace('.', '', $obj->version)]);
         } catch (\Exception $exc) {
-            echo json_encode(array('success' => false, 'message' => $exc->getMessage(), 'errorcode' => self::ERRNO_PLUGIN_OTHER));
+            echo json_encode(['success' => false, 'message' => $exc->getMessage(), 'errorcode' => self::ERRNO_PLUGIN_OTHER]);
         }
     }
 
@@ -107,13 +107,13 @@ class Newsletter2GoController extends JControllerLegacy
     {
         try {
             if (!$this->authenticate()) {
-                echo json_encode(array('success' => false, 'message' => 'Authentication faild!', 'errorcode' => self::ERRNO_PLUGIN_CREDENTIALS_WRONG));
+                echo json_encode(['success' => false, 'message' => 'Authentication faild!', 'errorcode' => self::ERRNO_PLUGIN_CREDENTIALS_WRONG]);
                 return;
             }
 
-            echo json_encode(array('success' => true, 'message' => 'OK!'));
+            echo json_encode(['success' => true, 'message' => 'OK!']);
         } catch (\Exception $exc) {
-            echo json_encode(array('success' => false, 'message' => $exc->getMessage(), 'errorcode' => self::ERRNO_PLUGIN_OTHER));
+            echo json_encode(['success' => false, 'message' => $exc->getMessage(), 'errorcode' => self::ERRNO_PLUGIN_OTHER]);
         }
     }
 
@@ -126,7 +126,7 @@ class Newsletter2GoController extends JControllerLegacy
     {
         $noValidEmail = false;
         $notFound = false;
-        $post = array();
+        $post = [];
         $model = $this->getModel('newsletter2go');
         $attributes = $model->getOption('fields','[]', true);
         $texts = $model->getOption('texts', '[]', true);
@@ -149,13 +149,13 @@ class Newsletter2GoController extends JControllerLegacy
         }
 
         if ($notFound) {
-            $result = array('success' => 0, 'message' => $texts['failureRequired']);
+            $result = ['success' => 0, 'message' => $texts['failureRequired']];
             echo json_encode($result);
             return;
         }
 
         if ($noValidEmail) {
-            $result = array('success' => 0, 'message' => $texts['failureEmail']);
+            $result = ['success' => 0, 'message' => $texts['failureEmail']];
             echo json_encode($result);
             return;
         }
@@ -164,7 +164,7 @@ class Newsletter2GoController extends JControllerLegacy
         $post['doicode'] = $model->getOption('doiCode');
         $response = $this->executeN2Go('recipient', $post);
 
-        $result = array('success' => $response['success']);
+        $result = ['success' => $response['success']];
         if (!$response) {
             $result['message'] = $texts['failureEmail'];
         } else {
@@ -200,7 +200,7 @@ class Newsletter2GoController extends JControllerLegacy
         $apiKey = $apiKey ? $apiKey : JFactory::getApplication()->input->getString('apiKey');
 
         if (strlen($apiKey) == 0) {
-            echo json_encode(array('success' => false, 'message' => 'api-key is missing', 'errorcode' => self::ERRNO_PLUGIN_CREDENTIALS_MISSING));
+            echo json_encode(['success' => false, 'message' => 'api-key is missing', 'errorcode' => self::ERRNO_PLUGIN_CREDENTIALS_MISSING]);
             exit;
         }
 
@@ -250,7 +250,7 @@ class Newsletter2GoController extends JControllerLegacy
         $model->setOption('accessToken', $input->getString('access_token'));
         $model->setOption('refreshToken', $input->getString('refresh_token'));
 
-        $result = array('success' => true);
+        $result = ['success' => true];
         echo json_encode($result);
         jexit();
 

@@ -40,8 +40,8 @@ class Newsletter2GoModelNewsletter2Go extends JModelList
             $value = json_encode($value);
         }
 
-        $values = array($db->quote($name), $db->quote($value));
-        $columns = array('name', 'value');
+        $values = [$db->quote($name), $db->quote($value)];
+        $columns = ['name', 'value'];
         $query->insert($db->quoteName('#__newsletter2go'))
             ->columns($columns)
             ->values(implode(',', $values));
@@ -87,13 +87,13 @@ class Newsletter2GoModelNewsletter2Go extends JModelList
             return null;
         }
         
-        $post->category = array($post->category);
+        $post->category = [$post->category];
         $post->url = JURI::root();
         $post->link = 'index.php/' .$id . '-' . $post->link;
         $post->description = $post->shortDescription . $post->description;
         
         //getting images
-        $images = array();
+        $images = [];
         $post->images = json_decode($post->images);
         if ($post->images->image_intro) {
             $images[] = JURI::root() . $post->images->image_intro;
@@ -113,7 +113,7 @@ class Newsletter2GoModelNewsletter2Go extends JModelList
         $post->images = $images;
         
         //getting tags
-        $post->tags = array();
+        $post->tags = [];
         $query = $db->getQuery(true);
         $query->select('t.alias as name')
                 ->from('#__contentitem_tag_map ctm')
@@ -130,7 +130,7 @@ class Newsletter2GoModelNewsletter2Go extends JModelList
 
     public function getLanguages()
     {
-        $result = array();
+        $result = [];
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
         $query->select('*');
@@ -140,12 +140,12 @@ class Newsletter2GoModelNewsletter2Go extends JModelList
         $languages = $db->loadObjectList();
 
         foreach ($languages as $lang) {
-            $result[] = array(
+            $result[] = [
                 'title' => $lang->title,
                 'lang_code' => $lang->lang_code,
                 'description' => $lang->description,
                 'default' => 'false',
-            );
+            ];
         }
 
         return $result;

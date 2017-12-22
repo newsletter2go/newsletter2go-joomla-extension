@@ -27,6 +27,9 @@ class JFormFieldFormtype extends JFormFieldList {
 
         if ($forms !== false){
 
+            $subscribe = false;
+            $unsubscribe = false;
+
             foreach ($forms as $form){
                 if($formUniqueCode == $form['hash']){
                     $subscribe = $form['type_subscribe'];

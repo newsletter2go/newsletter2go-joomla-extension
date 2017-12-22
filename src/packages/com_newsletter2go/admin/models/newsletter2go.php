@@ -43,8 +43,8 @@ class Newsletter2GoModelNewsletter2Go extends JModelList
             $value = json_encode($value);
         }
 
-        $values = array($db->quote($name), $db->quote($value));
-        $columns = array('name', 'value');
+        $values = [$db->quote($name), $db->quote($value)];
+        $columns = ['name', 'value'];
         $query->insert($db->quoteName('#__newsletter2go'))
             ->columns($columns)
             ->values(implode(',', $values));
@@ -55,7 +55,7 @@ class Newsletter2GoModelNewsletter2Go extends JModelList
     public function getGroups()
     {
         $apiKey = $this->getOption('apiKey');
-        return $this->executeN2Go('get/groups', array('key' => $apiKey));
+        return $this->executeN2Go('get/groups', ['key' => $apiKey]);
     }
 
     /**
@@ -68,9 +68,9 @@ class Newsletter2GoModelNewsletter2Go extends JModelList
         $result = false;
 
         if (strlen($authKey) > 0) {
-            $form = $this->execute('forms/all?_expand=1', array());
+            $form = $this->execute('forms/all?_expand=1', []);
             if (isset($form['status']) && $form['status'] >= 200 && $form['status'] < 300) {
-                $result = array();
+                $result = [];
                 foreach ($form['value'] as $value){
                     $key = $value['hash'];
                     $result[$key]['name'] = $value['name'];
@@ -145,7 +145,7 @@ class Newsletter2GoModelNewsletter2Go extends JModelList
         $cURL = curl_init();
         curl_setopt($cURL, CURLOPT_URL, $apiUrl.$action);
         curl_setopt($cURL, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($cURL, CURLOPT_HTTPHEADER, array('Authorization: Bearer '.$access_token));
+        curl_setopt($cURL, CURLOPT_HTTPHEADER, ['Authorization: Bearer '.$access_token]);
 
         if(!empty($post)) {
             $postData = '';
@@ -177,7 +177,7 @@ class Newsletter2GoModelNewsletter2Go extends JModelList
      */
     public function getVersion()
     {
-        $default = array('version' => '3.0.00');
+        $default = ['version' => '3.0.00'];
 
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
@@ -204,15 +204,15 @@ class Newsletter2GoModelNewsletter2Go extends JModelList
         $authKey = $this->getOption('authKey');
         $auth = base64_encode($authKey);
         $refreshToken = $this->getOption('refreshToken');
-        $refreshPost = array(
+        $refreshPost = [
             'refresh_token' => $refreshToken,
             'grant_type' => self::N2GO_REFRESH_GRANT_TYPE
-        );
+        ];
         $post = http_build_query($refreshPost);
 
         $url = self::N2GO_API_URL.'oauth/v2/token';
 
-        $header = array('Authorization: Basic '.$auth, 'Content-Type: application/x-www-form-urlencoded');
+        $header = ['Authorization: Basic '.$auth, 'Content-Type: application/x-www-form-urlencoded'];
 
         $curl = curl_init($url);
         curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
