@@ -23,8 +23,6 @@
         </schemas>
     </update>
 
-    <scriptfile>install.php</scriptfile>
-
     <files folder="site">
         <filename>index.html</filename>
         <filename>newsletter2go.php</filename>
