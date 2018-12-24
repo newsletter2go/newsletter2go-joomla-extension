@@ -1,4 +1,8 @@
 <?php
+
+/**
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ */
 defined('_JEXEC') or die;
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_newsletter2go'); ?>" method="post" name="adminForm" id="adminForm">

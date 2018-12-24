@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ */
+defined('_JEXEC') or die;
+
 jimport('joomla.application.component.model');
 
 class Newsletter2GoModelNewsletter2Go extends JModelList
