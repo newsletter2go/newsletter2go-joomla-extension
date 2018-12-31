@@ -16,6 +16,6 @@
         <file type="plugin" id="plg_newsletter2go" group="content">plg_newsletter2go.zip</file>
     </files>
     <updateservers>
-        <server type="extension" name="Newsletter2Go Extension Update Site">https://raw.githubusercontent.com/newsletter2go/newsletter2go-joomla-extension/master/src/manifest.xml</server>
+        <server type="extension" name="Newsletter2Go Extension Update Site">https://raw.githubusercontent.com/newsletter2go/newsletter2go-joomla-extension/master/manifest.xml</server>
     </updateservers>
 </extension>
