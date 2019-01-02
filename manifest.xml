@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <updates>
-    <!-- update sample from Joomla at https://docs.joomla.org/Deploying_an_Update_Server
     <update>
         <name>Newsletter2Go Extension Package</name>
         <description>Connector for Newsletter2Go</description>
@@ -13,5 +12,4 @@
         </downloads>
         <targetplatform name="joomla" version="3.[012345]" />
     </update>
-    -->
 </updates>
