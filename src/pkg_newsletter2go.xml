@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<extension type="package" version="4.0.01">
+<extension type="package" version="4.0.02">
     <name>Newsletter2Go Package</name>
     <author>Newsletter2Go</author>
     <creationDate>February 2015</creationDate>
     <packagename>newsletter2go</packagename>
-    <version>4.0.00</version>
+    <version>4.0.02</version>
     <url>http://www.newsletter2go.de</url>
     <packager>Newsletter2Go</packager>
     <packagerurl>http://www.newsletter2go.de</packagerurl>
