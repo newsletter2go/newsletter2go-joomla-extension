@@ -42,7 +42,6 @@ class Newsletter2GoControllerNewsletter2Go extends JControllerForm
     {
         $model = $this->getModel('newsletter2go');
         $input = JFactory::getApplication()->input;
-        $model->setOption('apiKey', $input->getString('apiKey'));
         $model->setOption('formUniqueCode', $input->getString('formUniqueCode'));
         $model->setOption('configFormStyles', $input->getString('widgetStyleConfig'));
         $model->setOption('widget', $input->get('widgetSourceCode', null, 'raw'));
