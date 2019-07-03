@@ -4,6 +4,7 @@
     <author>Newsletter2Go</author>
     <creationDate>February 2015</creationDate>
     <packagename>newsletter2go</packagename>
+    <license>https://www.gnu.org/licenses/old-licenses/gpl-2.0 GNU/GPL</license>
     <version>4.0.02</version>
     <url>http://www.newsletter2go.de</url>
     <packager>Newsletter2Go</packager>
@@ -14,4 +15,7 @@
         <file type="module" id="mod_newsletter2go" client="site">mod_newsletter2go.zip</file>
         <file type="plugin" id="plg_newsletter2go" group="content">plg_newsletter2go.zip</file>
     </files>
+    <updateservers>
+        <server type="extension" name="Newsletter2Go Extension Update Site">https://raw.githubusercontent.com/newsletter2go/newsletter2go-joomla-extension/master/manifest.xml</server>
+    </updateservers>
 </extension>

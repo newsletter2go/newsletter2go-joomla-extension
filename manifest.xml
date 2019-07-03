@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<updates>
+    <update>
+        <name>Newsletter2Go Extension Package</name>
+        <description>Connector for Newsletter2Go</description>
+        <element>newsletter2go</element>
+        <type>package</type>
+        <version>4.0.02</version>
+        <client>1</client>
+        <downloads>
+            <downloadurl type="full" format="zip">https://www.newsletter2go.de/plugins/deploy_new/Joomla/Joomla_latest.zip</downloadurl>
+        </downloads>
+        <targetplatform name="joomla" version="3.[012345]" />
+    </update>
+</updates>
