@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="plugin" version="3.1" group="content">
+<extension type="plugin" version="3.1" group="content" method="upgrade">
     <name>Content - Newsletter2Go</name>
     <author>Newsletter2Go</author>
     <creationDate>July 2016</creationDate>
     <copyright>Copyright © 2016, Newsletter2Go GmbH</copyright>
     <license>https://www.gnu.org/licenses/old-licenses/gpl-2.0 GNU/GPL</license>
     <authorUrl>https://www.newsletter2go.de/</authorUrl>
-    <version>4.0.02</version>
+    <version>4.0.03</version>
     <description><![CDATA[<strong>Newsletter2Go content plugin</strong>
         <p>To display Newsletter2Go inside articles please use one of the following short codes:</p>
         <ul>

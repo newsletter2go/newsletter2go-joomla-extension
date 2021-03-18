@@ -6,7 +6,7 @@
     <copyright>Copyright © 2015, Newsletter2Go GmbH</copyright>
     <license>https://www.gnu.org/licenses/old-licenses/gpl-2.0 GNU/GPL</license>
     <authorUrl>https://www.newsletter2go.de/</authorUrl>
-    <version>4.0.02</version>
+    <version>4.0.03</version>
     <description>MOD_NEWSLETTER2GO_XML_DESCRIPTION</description>
     <files>
         <filename module="mod_newsletter2go">mod_newsletter2go.php</filename>
