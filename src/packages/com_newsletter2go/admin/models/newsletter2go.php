@@ -182,7 +182,7 @@ class Newsletter2GoModelNewsletter2Go extends JModelList
      */
     public function getVersion()
     {
-        $default = ['version' => '4.0.02'];
+        $default = ['version' => '4.0.03'];
 
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
